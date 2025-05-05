@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/header.ejs") %>
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <%- include("./partials/nav-header.ejs") %>
+        <!-- End Header -->
+
+        <!-- ======= Sidebar ======= -->
+        <%- include("./partials/admin-sidebar.ejs") %>
+            <!-- End Sidebar-->
+
+            <main id="main" class="main">
+                <%- include("./partials/flashMessage.ejs") %>
+                    <div class="pagetitle">
+                        <h1>Dashboard</h1>
+                        <nav>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="https://www.traveego.com/home">Home</a></li>
+                                <li class="breadcrumb-item active">Dashboard</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <!-- End Page Title -->
+
+                    <section class="section dashboard">
+                        <div class="row">
+
+                            <!-- Left side columns -->
+                            <div class="col-lg-8">
+                                <div class="row">
+
+                                    <!-- Sales Card -->
+                                    <div class="col-xxl-4 col-md-6">
+                                        <div class="card info-card sales-card">
+
+                                            <div class="card-body">
+                                                <h5 class="card-title">Total Blogs <span></span></h5>
+
+                                                <div class="d-flex align-items-center">
+                                                    <h6><%= totalBlogs %></h6>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- End Sales Card -->
+
+                                    <!-- Sales Card -->
+                                    <div class="col-xxl-4 col-md-6">
+                                        <div class="card info-card sales-card">
+
+                                            <div class="card-body">
+                                                <h5 class="card-title">Cancer Blogs <span></span></h5>
+
+                                                <div class="d-flex align-items-center">
+                                                    <h6><%= cancerBlogs %></h6>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- End Sales Card -->
+
+                                    <!-- Sales Card -->
+                                    <div class="col-xxl-4 col-md-6">
+                                        <div class="card info-card sales-card">
+
+                                            <div class="card-body">
+                                                <h5 class="card-title">Orthopedics Blogs <span></span></h5>
+
+                                                <div class="d-flex align-items-center">
+                                                    <h6><%= orthopedicBlogs %></h6>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- End Sales Card -->
+
+                                </div>
+                            </div>
+                            <!-- End Left side columns -->
+
+                        </div>
+                    </section>
+
+            </main>
+            <!-- End #main -->
+
+            <!-- ======= Footer ======= -->
+            <%- include("./partials/footer.ejs") %>
+
+</body>
+
+</html>

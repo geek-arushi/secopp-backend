@@ -1,0 +1,5 @@
+<% if(locals.message && locals.message.length> 0){ %>
+    <div id="flashMessage" class="alert <%= message[1] %>" role="alert">
+        <%= message[0] %>
+    </div>
+    <% }%>

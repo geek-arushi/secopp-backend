@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("./partials/header.ejs") %>
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/quill-image-uploader@1.2.3/dist/quill.imageUploader.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <%- include("./partials/nav-header.ejs") %>
+        <!-- End Header -->
+
+        <!-- ======= Sidebar ======= -->
+        <%- include("./partials/admin-sidebar.ejs") %>
+            <!-- End Sidebar-->
+
+            <main id="main" class="main">
+                <%- include("./partials/flashMessage.ejs") %>
+                    <div class="pagetitle">
+                        <h1>All Blogs</h1>
+                        <nav>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="">Home</a></li>
+                                <li class="breadcrumb-item active">All Blogs</li>
+                            </ol>
+                        </nav>
+                    </div><!-- End Page Title -->
+
+                    <section class="section">
+                        <div class="container">
+                            <h5 class="card-title fw-bold">All Blogs</h5>
+
+                            <div class="mb-3 d-flex justify-content-end">
+                                <select class="form-select w-auto" id="blogFilter" onchange="filterCards()">
+                                    <option value="all">All Categories</option>
+                                    <option value="Cancer">Cancer</option>
+                                    <option value="Orthopedic">Orthopedic</option>
+                                </select>
+                            </div>
+
+                            <div class="row">
+                                <% if (locals.allBlogs) { %>
+                                    <% allBlogs.forEach((element, i)=> { %>
+                                        <div class="col-md-4 mb-4" data-category="<%= element.blogCategory %>">
+                                            <div class="card h-100">
+                                                <div class="row g-0">
+                                                    <div class="col-md-4">
+                                                        <img src='<%= element.blogCardImage %>'
+                                                            class="img-fluid rounded-start" alt="...">
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card-body">
+                                                            <p class="card-text fw-bold text-truncate">
+                                                                <%= element.blogCardTitle %>
+                                                            </p>
+                                                            <small class="text-body-secondary"><i
+                                                                    class="bi bi-card-text"></i>
+                                                                <%= element.blogCategory %> | <%=
+                                                                        element.blogCardDescription %>
+                                                            </small><br>
+                                                            <small class="text-body-secondary"><i
+                                                                    class="bi bi-chat-dots"></i>
+                                                                <%= element.likes %>
+                                                            </small>
+                                                            <div>
+                                                                <a href="/admin/blog/<%= element._id %>"
+                                                                    class="text-primary me-3" title="View"><i
+                                                                        class="bi bi-eye"></i></a>
+                                                                <a href="/admin/edit-blog/<%= element._id %>"
+                                                                    class="text-warning me-3" title="Edit"><i
+                                                                        class="bi bi-pencil-square"></i></a>
+                                                                <a href="/admin/delete-blog/<%= element._id %>"
+                                                                    class="text-danger" title="Delete"><i
+                                                                        class="bi bi-trash"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% }); %>
+                                            <% } %>
+
+                            </div>
+                        </div>
+                    </section>
+
+
+            </main>
+            <!-- End #main -->
+
+            <!-- ======= Footer ======= -->
+            <%- include('./partials/footer.ejs') %>
+
+                <script>
+                    Quill.register("modules/imageUploader", window.ImageUploader);
+
+                    const quill = new Quill("#editor", {
+                        theme: "snow",
+                        modules: {
+                            toolbar: [
+                                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                                ["bold", "italic", "underline"],
+                                ["link", "image"],
+                                [{ list: "ordered" }, { list: "bullet" }],
+                                ["clean"]
+                            ],
+                            imageUploader: {
+                                upload: file => {
+                                    return new Promise((resolve, reject) => {
+                                        const formData = new FormData();
+                                        formData.append("file", file);
+                                        formData.append("upload_preset", "Preset_1"); // Change
+                                        fetch("https://api.cloudinary.com/v1_1/dwxpjipx6/image/upload", {
+                                            method: "POST",
+                                            body: formData
+                                        })
+                                            .then(res => res.json())
+                                            .then(res => {
+                                                resolve(res.secure_url); // Quill will insert this URL into the editor
+                                            })
+                                            .catch(() => {
+                                                reject("Image upload failed");
+                                            });
+                                    });
+                                }
+                            }
+                        }
+                    });
+
+                    document.getElementById("blogForm").addEventListener("submit", function (e) {
+                        const html = quill.root.innerHTML;
+                        document.getElementById("hiddenContent").value = html;
+                    });
+                </script>
+
+                <script>
+                    function filterCards() {
+                        const selectedCategory = document.getElementById("blogFilter").value;
+                        const cards = document.querySelectorAll('[data-category]');
+
+                        cards.forEach(card => {
+                            const cardCategory = card.getAttribute("data-category");
+                            if (selectedCategory === "all" || cardCategory === selectedCategory) {
+                                card.style.display = "block";
+                            } else {
+                                card.style.display = "none";
+                            }
+                        });
+                    }
+                </script>
+</body>
+
+</html>
