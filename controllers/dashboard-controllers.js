@@ -68,7 +68,7 @@ export const editBlog = async (req, res) => {
 
 export const editBlogPost = async (req, res) => {
     try {
-        const { blogCardTitle, blogCardDescription, blogCategory, content, likes } = req.body;
+        const { blogCardTitle, blogCardDescription, blogCategory, content } = req.body;
         const blog = await Blog.findById(req.params.id);
 
         if (!blog) {
@@ -87,7 +87,6 @@ export const editBlogPost = async (req, res) => {
         blog.blogCardDescription = blogCardDescription;
         blog.blogCategory = blogCategory;
         blog.content = content;
-        blog.likes = likes;
 
         if (req.files && req.files.length > 0) {
             await deleteImageFromCloudinary(blog.blogCardImage);
@@ -148,13 +147,13 @@ export const createBlog = async (req, res) => {
 
 export const createBlogPost = async (req, res) => {
     try {
-        const { blogCardTitle, blogCardDescription, blogCategory, likes, content } = req.body;
+        const { blogCardTitle, blogCardDescription, blogCategory, content } = req.body;
 
         const image = req.files
         const uploadedImageURL = await uploadFile(image[0].path)
         const blogCardImage = uploadedImageURL.secure_url
 
-        const blog = new Blog({ blogCardTitle, blogCardDescription, blogCategory, likes, blogCardImage, content });
+        const blog = new Blog({ blogCardTitle, blogCardDescription, blogCategory, blogCardImage, content });
         await blog.save();
 
         req.flash("flashMessage", ["Blog Created Successfully !!", "alert-success"])

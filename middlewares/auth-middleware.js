@@ -22,5 +22,7 @@ export const adminAuth = async (req, res, next) => {
         next()
     } catch (error) {
         console.log("Error in adminAuth middleware", error)
+        req.flash("flashMessage", ["Login to access this page", "alert-danger"])
+        return res.redirect('/login')
     }
 }
