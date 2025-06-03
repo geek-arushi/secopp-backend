@@ -35,10 +35,10 @@ app.use(
 app.use(flash())
 
 // Set template engine
-app.set("view engine", "ejs");
+app.set("view engine", "ecjs");
 
 // serve static file
-app.use(express.static('./public'));
+app.use(express.static('../public'));
 
 
 app.use(express.json());
