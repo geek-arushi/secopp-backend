@@ -10,7 +10,7 @@ const CORS_URL = process.env.CORS_URL || 'http://localhost:3000'
 
 // Allow CORS from http://localhost:3000
 app.use(cors({
-    origin: CORS_URL
+  origin: CORS_URL
 }));
 
 import cookieParser from 'cookie-parser'
@@ -35,10 +35,10 @@ app.use(
 app.use(flash())
 
 // Set template engine
-app.set("view engine", "ecjs");
+app.set("view engine", "ejs");
 
 // serve static file
-app.use(express.static('../public'));
+app.use(express.static('./public'));
 
 
 app.use(express.json());
